@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ab4b8ccb-42ec-4e5e-bc3b-121c576876b3" name="Default Changelist" comment="" />
+    <list default="true" id="ab4b8ccb-42ec-4e5e-bc3b-121c576876b3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/28.05.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ParentClasses/com/company/Chair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ParentClasses/com/company/Chair.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ParentClasses/com/company/Furniture.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ParentClasses/com/company/Furniture.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ParentClasses/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ParentClasses/com/company/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Chair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Chair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Furniture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Furniture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,15 +24,22 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
   <component name="ProjectId" id="1cXNZTHlsDzAuglG8ZV8NMYu7fp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../oo2020" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -52,6 +69,9 @@
       <option name="presentableId" value="Default" />
       <updated>1590671033094</updated>
       <workItem from="1590671037312" duration="1263000" />
+      <workItem from="1590730056011" duration="2115000" />
+      <workItem from="1590737888161" duration="1059000" />
+      <workItem from="1591082235706" duration="26000" />
     </task>
     <servers />
   </component>
@@ -63,21 +83,29 @@
       <screen x="0" y="0" width="1600" height="860" />
     </state>
     <state x="605" y="144" key="#com.intellij.ide.util.MemberChooser/0.0.1600.860@0.0.1600.860" timestamp="1590671318777" />
-    <state width="1556" height="217" key="GridCell.Tab.0.bottom" timestamp="1590671663564">
+    <state x="580" y="183" key="FileChooserDialogImpl" timestamp="1591082261962">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1556" height="217" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1590671663564" />
-    <state width="1556" height="217" key="GridCell.Tab.0.center" timestamp="1590671663563">
+    <state x="580" y="183" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1591082261962" />
+    <state width="1556" height="232" key="GridCell.Tab.0.bottom" timestamp="1590732319623">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1556" height="217" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1590671663563" />
-    <state width="1556" height="217" key="GridCell.Tab.0.left" timestamp="1590671663563">
+    <state width="1556" height="232" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1590732319623" />
+    <state width="1556" height="232" key="GridCell.Tab.0.center" timestamp="1590732319623">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1556" height="217" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1590671663563" />
-    <state width="1556" height="217" key="GridCell.Tab.0.right" timestamp="1590671663564">
+    <state width="1556" height="232" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1590732319623" />
+    <state width="1556" height="232" key="GridCell.Tab.0.left" timestamp="1590732319623">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state width="1556" height="217" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1590671663564" />
+    <state width="1556" height="232" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1590732319623" />
+    <state width="1556" height="232" key="GridCell.Tab.0.right" timestamp="1590732319623">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1556" height="232" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1590732319623" />
+    <state x="496" y="252" key="com.intellij.ide.util.TipDialog" timestamp="1591082234725">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="496" y="252" key="com.intellij.ide.util.TipDialog/0.0.1600.860@0.0.1600.860" timestamp="1591082234725" />
   </component>
 </project>

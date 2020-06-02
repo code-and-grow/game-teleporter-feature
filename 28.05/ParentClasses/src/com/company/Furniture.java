@@ -13,7 +13,7 @@ public class Furniture {
 
     public double getPriceInUSD() {
         double hind = this.price*1.1;
-        System.out.println("Furniture inUSD: " + hind);
+//        System.out.println("Furniture inUSD: " + hind);
         return hind;
     }
 

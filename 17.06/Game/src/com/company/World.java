@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.character.Character;
+import com.company.item.Item;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class World {
     private static int width;
     private static int height;
     List<Character> characters;
+    List<Item> items;
 
     public World(int width, int height) {
         this.width = width;
@@ -18,7 +20,7 @@ public class World {
         this.characters = characters;
     }
 
-    void render () {
+    public void render () {
         restrict();
 
         String symbol = "";
@@ -31,6 +33,12 @@ public class World {
                     symbol = "|";
                 } else {
                     symbol = " ";
+                }
+
+                for (Item i: items) {
+                    if(i.getyCoord() == y && i.getxCoord() == x) {
+                        symbol = "S";
+                    }
                 }
 
                 for (Character c: characters) {
@@ -47,7 +55,13 @@ public class World {
     }
 
     private void restrict() {
-        Character c = characters.get(characters.size()-1);
+//        Character c = characters.get(characters.size()-1);
+//        System.out.println(c.getClass().getName());
+        Character c = characters.stream()
+                .filter(e -> e.getClass().getName().equals("com.company.character.Player"))
+                .peek(System.out::println)
+                .findFirst()
+                .get();
 
         int xCoord = c.getxCoord();
         int yCoord = c.getyCoord();
@@ -68,5 +82,9 @@ public class World {
 
     public static int getHeight() {
         return height;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

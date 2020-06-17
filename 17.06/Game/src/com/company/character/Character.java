@@ -1,11 +1,12 @@
 package com.company.character;
 
 import com.company.Direction;
+import com.company.WorldObject;
 import com.company.item.Inventory;
 import com.company.World;
 
 // @Lombok getter and setter
-public class Character {
+public class Character implements WorldObject {
     private int xCoord;
     private int yCoord;
 

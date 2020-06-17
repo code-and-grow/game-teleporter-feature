@@ -12,7 +12,15 @@ public class Player extends Character {
         return health;
     }
 
-    public static void setHealth(double health) {
+    private static void setHealth(double health) {
         Player.health = health;
+    }
+
+    public static void takeHealth() {
+        Player.setHealth(Player.getHealth()-1);
+    }
+
+    public static void setFullHealth() {
+        Player.setHealth(10);
     }
 }

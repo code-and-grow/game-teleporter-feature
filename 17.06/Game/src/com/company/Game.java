@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class Game {
     static Scanner scanner = new Scanner(System.in);
     static int counter = 0;
+    static List<Item> playerWeapons;
 
     public static void main(String[] args) throws InterruptedException {
         World world = new World(10, 5);
@@ -22,93 +23,128 @@ public class Game {
         Enemy enemy = new Enemy("Enemy", CharacterType.WIZARD);
         Friend friend = new Friend("Friend", CharacterType.HERO);
         Player player = new Player("Mihkel", CharacterType.WARRIOR);
-
-        // Composition
+        Healer healer = new Healer();
         player.getInventory().addItem(new Hammer());
         player.getInventory().addItem(new Sword());
         player.getInventory().showInventory();
-        world.setCharacters(Arrays.asList(enemy, friend, player));
-
-        moveCharacters(world, enemy, friend, player);
+        // Player always last as it overwrites on the map
+        world.setCharacters(Arrays.asList(enemy, friend, healer, player));
+        world.setItems(Arrays.asList(new Hammer(), new Sword(), new Boot()));
+        movePlayer(world, enemy, friend, player, healer);
     }
 
-    private static void moveCharacters(World world, Enemy enemy, Friend friend, Player player) throws InterruptedException {
+    private static void movePlayer(World world, Enemy enemy, Friend friend, Player player, Healer healer) throws InterruptedException {
         String input = "";
         world.render();
         while(!input.equals("end")){
             input = scanner.nextLine();
-            if (input.equals("w")){
-                Direction playerDirection = Direction.UP;
-                player.changeDirection(playerDirection);
-                player.move();
-            } else if  (input.equals("s")){
-                player.changeDirection(Direction.DOWN);
-                player.move();
-            } else if  (input.equals("a")){
-                player.changeDirection(Direction.LEFT);
-                player.move();
-            } else if  (input.equals("d")){
-                player.changeDirection(Direction.RIGHT);
-                player.move();
-            } else if  (input.equals("")){
-                player.move();
+            switch (input) {
+                case "w":
+                    Direction playerDirection = Direction.UP;
+                    player.changeDirection(playerDirection);
+                    player.move();
+                    break;
+                case "s":
+                    player.changeDirection(Direction.DOWN);
+                    player.move();
+                    break;
+                case "a":
+                    player.changeDirection(Direction.LEFT);
+                    player.move();
+                    break;
+                case "d":
+                    player.changeDirection(Direction.RIGHT);
+                    player.move();
+                    break;
+                case "":
+                    player.move();
+                    break;
             }
-            boolean catched = false;
-            if (player.getxCoord() == enemy.getxCoord() && player.getyCoord() == enemy.getyCoord()) {
-                enemy.setVisible(false);
-                catched = true;
-            }
-            if (player.getxCoord() == friend.getxCoord() && player.getyCoord() == friend.getyCoord()) {
-                enemy.setVisible(true);
-                enemy.randomiseCoordinates(1, World.getWidth()-1, World.getHeight()-1);
-            }
-            world.render();
-            if(catched){
-                enemySeen(player);
-            }
+            meetCharacter(world, enemy, friend, player, healer);
+        }
+    }
+
+    private static void meetCharacter(World world, Enemy enemy, Friend friend, Player player, Healer healer) throws InterruptedException {
+        boolean enemyCatched = false;
+        if (player.getxCoord() == enemy.getxCoord() && player.getyCoord() == enemy.getyCoord()) {
+            enemy.setVisible(false);
+            enemyCatched = true;
+        }
+        if (player.getxCoord() == friend.getxCoord() && player.getyCoord() == friend.getyCoord()) {
+            enemy.setVisible(true);
+            enemy.randomiseCoordinates(1, World.getWidth()-1, World.getHeight()-1);
+        }
+        if (player.getxCoord() == healer.getxCoord() && player.getyCoord() == healer.getyCoord()) {
+            System.out.println("Ravitseja ravis sind! Su elud on nüüd täis!");
+            Player.setFullHealth();
+            healer.randomiseCoordinates(1, World.getWidth()-1, World.getHeight()-1);
+        }
+        world.render();
+        if(enemyCatched){
+            enemySeen(player);
         }
     }
 
     private static void enemySeen(Player player) throws InterruptedException {
-        System.out.println("Kohtusid vaenlasega! Kas soovid temaga võidelda? Y/N: ");
-        String input = scanner.nextLine().toLowerCase();
-        if (input.equals("y")) {
-            System.out.println("Algas lahing");
-            TimeUnit.MILLISECONDS.sleep(100);
-            System.out.println("Sul on järgmine valik relvi: ");
-            TimeUnit.MILLISECONDS.sleep(100);
-            player.getInventory().showInventory();
-            System.out.println("Vali number millist relva kasutad: ");
-            Item chosenWeapon = getFightWeapon(player);
-            TimeUnit.MILLISECONDS.sleep(100);
-            System.out.println("Hakkasid võitlema!!");
-            while (Player.getHealth()>0 || Enemy.getHealth()>0) {
-                if(Player.getHealth()<=0 || Enemy.getHealth()<=0){
-                    break;
-                }
-                System.out.println(Player.getHealth());
-                System.out.println(Enemy.getHealth());
-                fightEnemy(chosenWeapon);
+        playerWeapons = player.getInventory().getInventory();
+        if(Player.getHealth() > 0 && playerWeapons.size() > 0) {
+            System.out.println("Kohtusid vaenlasega! Kas soovid temaga võidelda? Y/N: ");
+            String input = scanner.nextLine().toLowerCase();
+            if (input.equals("y")) {
+                startBattle(player);
+            } else {
+                System.out.println("Põgenesid vaenlase eest!");
+                System.out.println("Liigu edasi: ");
             }
-            TimeUnit.MILLISECONDS.sleep(100);
-            counter++;
-            System.out.println("Vaenlane käes!! Oled püüdnud vaenlasi: " + counter);
-            Enemy.reboost();
-            TimeUnit.MILLISECONDS.sleep(100);
-            System.out.println("Liigu edasi: ");
-        } else {
-            System.out.println("Põgenesid vaenlase eest!");
-            System.out.println("Liigu edasi: ");
+        } else if (Player.getHealth() <= 0) {
+            System.out.println("Sul on elud otsas! Otsi üles ravitseja et end ravida");
+        } else if (playerWeapons.size() <= 0) {
+            System.out.println("Sul on relvad otsas! Püüa neid mänguväljakult");
         }
+
     }
 
-    private static Item getFightWeapon(Player player) {
+    private static void startBattle(Player player) throws InterruptedException {
+        System.out.println("Algas lahing");
+        TimeUnit.MILLISECONDS.sleep(100);
+        System.out.println("Sul on järgmine valik relvi: ");
+        TimeUnit.MILLISECONDS.sleep(100);
+        player.getInventory().showInventory();
+        System.out.println("Vali number millist relva kasutad: ");
+        Item chosenWeapon = getFightWeapon();
+        TimeUnit.MILLISECONDS.sleep(100);
+        System.out.println("Hakkasid võitlema!!");
+        while (Player.getHealth()>0 || Enemy.getHealth()>0) {
+            if (Player.getHealth() <= 0) {
+                System.out.println("Said surma!");
+                break;
+            }
+            if (Enemy.getHealth() <= 0) {
+                TimeUnit.MILLISECONDS.sleep(100);
+                counter++;
+                System.out.println("Vaenlane käes!! Oled püüdnud vaenlasi: " + counter);
+                break;
+            }
+            fightEnemy(chosenWeapon);
+        }
+        Enemy.reboost();
+        TimeUnit.MILLISECONDS.sleep(100);
+        System.out.println("Liigu edasi: ");
+    }
+
+    private static Item getFightWeapon() {
         String input;
         input = scanner.nextLine();
         Item chosenWeapon = null;
         while(chosenWeapon == null){
             try {
-                chosenWeapon = player.getInventory().getInventory().get(Integer.parseInt(input)-1);
+                chosenWeapon = playerWeapons.get(Integer.parseInt(input)-1);
+                Item finalChosenWeapon = chosenWeapon;
+                playerWeapons.stream()
+                        .filter(e -> e == finalChosenWeapon)
+//                        .peek(System.out::println)
+                        .findFirst()
+                        .ifPresent(e -> e.setEndurance(e.getEndurance()-1));
             } catch (NumberFormatException e) {
                 System.out.println("Sisestasid numbri asemel tähe! Sisesta uuesti!");
                 input = scanner.nextLine();
@@ -118,7 +154,6 @@ public class Game {
             }
         }
         System.out.println("Valisid relva: " + chosenWeapon.getName());
-
         return chosenWeapon;
     }
 
@@ -143,7 +178,7 @@ public class Game {
             }
         } else {
             System.out.println("Ei saanud pihta! Vaenlane võttis sult elu");
-            Enemy.setHealth(Enemy.getHealth()-1);
+            Player.takeHealth();
         }
     }
 

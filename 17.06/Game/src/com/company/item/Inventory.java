@@ -2,6 +2,7 @@ package com.company.item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Inventory {
     private int inventoryMaxSize = 10;
@@ -17,12 +18,14 @@ public class Inventory {
     }
 
     public void showInventory() {
-        for (int i = 0; i < inventory.size(); i++) {
-            System.out.println(i+1 + ": " + inventory.get(i));
+        for (int i = 0; i < getInventory().size(); i++) {
+            System.out.println(i+1 + ": " + getInventory().get(i));
         }
     }
 
     public List<Item> getInventory() {
-        return inventory;
+        return inventory.stream().filter(e -> e.getEndurance() > 0).collect(Collectors.toList());
     }
+
+
 }

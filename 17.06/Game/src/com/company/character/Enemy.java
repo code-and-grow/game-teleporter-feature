@@ -5,7 +5,7 @@ public class Enemy extends Character {
 
     public Enemy(String name, CharacterType type) {
         super(name, type, "Z");
-        health = 10;
+        health = 5;
     }
 
     public static double getHealth() {

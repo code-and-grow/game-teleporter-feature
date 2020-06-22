@@ -12,6 +12,7 @@ public class Item implements WorldObject {
     private int endurance;
     private int level;
     private ItemType itemType;
+    private String symbol;
 
     public Item(String name, double strength, int endurance) {
         randomiseCoordinates(1, World.getWidth()-1, World.getHeight()-1);
@@ -20,6 +21,7 @@ public class Item implements WorldObject {
         this.endurance = endurance;
         this.level = 1;
         this.itemType = getRandomItemType();
+        this.symbol = "i";
 //        getRandomItempType();
     }
 

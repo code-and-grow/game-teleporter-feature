@@ -1,10 +1,7 @@
 package com.company;
 
 import com.company.character.*;
-import com.company.item.Hammer;
-import com.company.item.Item;
-import com.company.item.Sword;
-import com.company.item.Boot;
+import com.company.item.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,10 +23,11 @@ public class Game {
         Healer healer = new Healer();
         player.getInventory().addItem(new Hammer());
         player.getInventory().addItem(new Sword());
+        player.getInventory().addItem(new Teleporter());
         player.getInventory().showInventory();
         // Player always last as it overwrites on the map
         world.setCharacters(Arrays.asList(enemy, friend, healer, player));
-        world.setItems(Arrays.asList(new Hammer(), new Sword(), new Boot()));
+        world.setItems(Arrays.asList(new Hammer(), new Sword(), new Boot(), new Teleporter()));
         movePlayer(world, enemy, friend, player, healer);
     }
 
@@ -79,19 +77,25 @@ public class Game {
             Player.setFullHealth();
             healer.randomiseCoordinates(1, World.getWidth()-1, World.getHeight()-1);
         }
+
+//        if (player.getxCoord() ==  && player.getyCoord() == ) {
+//            System.out.println("Ravitseja ravis sind! Su elud on nüüd täis!");
+//            Player.setFullHealth();
+//            healer.randomiseCoordinates(1, World.getWidth()-1, World.getHeight()-1);
+//        }
         world.render();
         if(enemyCatched){
-            enemySeen(player);
+            enemySeen(player, enemy);
         }
     }
 
-    private static void enemySeen(Player player) throws InterruptedException {
+    private static void enemySeen(Player player, Enemy enemy) throws InterruptedException {
         playerWeapons = player.getInventory().getInventory();
         if(Player.getHealth() > 0 && playerWeapons.size() > 0) {
             System.out.println("Kohtusid vaenlasega! Kas soovid temaga võidelda? Y/N: ");
             String input = scanner.nextLine().toLowerCase();
             if (input.equals("y")) {
-                startBattle(player);
+                startBattle(player, enemy);
             } else {
                 System.out.println("Põgenesid vaenlase eest!");
                 System.out.println("Liigu edasi: ");
@@ -104,7 +108,7 @@ public class Game {
 
     }
 
-    private static void startBattle(Player player) throws InterruptedException {
+    private static void startBattle(Player player, Enemy enemy) throws InterruptedException {
         System.out.println("Algas lahing");
         TimeUnit.MILLISECONDS.sleep(100);
         System.out.println("Sul on järgmine valik relvi: ");
@@ -113,23 +117,37 @@ public class Game {
         System.out.println("Vali number millist relva kasutad: ");
         Item chosenWeapon = getFightWeapon();
         TimeUnit.MILLISECONDS.sleep(100);
-        System.out.println("Hakkasid võitlema!!");
-        while (Player.getHealth()>0 || Enemy.getHealth()>0) {
-            if (Player.getHealth() <= 0) {
-                System.out.println("Said surma!");
-                break;
+        if (chosenWeapon.getClass().getName().equals("com.company.item.Teleporter")) {
+            useTeleporter(player, enemy, chosenWeapon);
+            return;
+        } else {
+            System.out.println("Hakkasid võitlema!!");
+            while (Player.getHealth()>0 || Enemy.getHealth()>0) {
+                if (Player.getHealth() <= 0) {
+                    System.out.println("Said surma!");
+                    break;
+                }
+                if (Enemy.getHealth() <= 0) {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                    counter++;
+                    System.out.println("Vaenlane käes!! Oled püüdnud vaenlasi: " + counter);
+                    break;
+                }
+                fightEnemy(chosenWeapon, player, enemy);
             }
-            if (Enemy.getHealth() <= 0) {
-                TimeUnit.MILLISECONDS.sleep(100);
-                counter++;
-                System.out.println("Vaenlane käes!! Oled püüdnud vaenlasi: " + counter);
-                break;
-            }
-            fightEnemy(chosenWeapon);
         }
         Enemy.reboost();
         TimeUnit.MILLISECONDS.sleep(100);
         System.out.println("Liigu edasi: ");
+    }
+
+    private static void useTeleporter(Player player, Enemy enemy, Item chosenWeapon) {
+        ((Teleporter) (chosenWeapon)).teleport();
+        player.randomiseCoordinates(1, World.getWidth()-1, World.getHeight()-1);
+        enemy.setVisible(true);
+        System.out.println(player.getHealth());
+        System.out.println(enemy.getHealth());
+        return;
     }
 
     private static Item getFightWeapon() {
@@ -157,13 +175,13 @@ public class Game {
         return chosenWeapon;
     }
 
-    private static void fightEnemy(Item chosenWeapon) {
-        System.out.println(Player.getHealth());
-        System.out.println(Enemy.getHealth());
+    private static void fightEnemy(Item chosenWeapon, Player player, Enemy enemy) {
+        System.out.println(player.getHealth());
+        System.out.println(enemy.getHealth());
         String input;
         System.out.println("Ütle number millega võitled vahemikus 1-3");
         input = scanner.nextLine();
-//        String enemyNumber = String.valueOf(enemyFightRandomNumber());
+        String enemyNumber = String.valueOf(enemyFightRandomNumber());
         if(input.equals(String.valueOf(enemyFightRandomNumber()))){
             switch (chosenWeapon.getClass().getName()) {
                 case "com.company.item.Sword":
@@ -183,6 +201,6 @@ public class Game {
     }
 
     private static int enemyFightRandomNumber() {
-        return (int) ((Math.random() * ((3 - 1) + 1)) + 1);
+        return (int) ((Math.random() * ((4 - 1) + 1)) + 1);
     }
 }

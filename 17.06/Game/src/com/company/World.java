@@ -37,7 +37,7 @@ public class World {
 
                 for (Item i: items) {
                     if(i.getyCoord() == y && i.getxCoord() == x) {
-                        symbol = "S";
+                        symbol = "i";
                     }
                 }
 
